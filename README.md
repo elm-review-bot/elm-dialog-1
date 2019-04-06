@@ -18,9 +18,9 @@ You should not include the JS, instead take a look at [elm-mdl](http://package.e
 
 ## Installation
 ```
-elm package install damukles/elm-dialog
+elm package install billstclair/elm-dialog
 ```
 
 ## Getting started
-Look at the [example](https://github.com/damukles/elm-dialog/tree/master/examples)
+Look at the [example](https://github.com/billstclair/elm-dialog/tree/master/examples)
 and read the module documentation
