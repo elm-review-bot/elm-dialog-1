@@ -1,6 +1,6 @@
 {
     "type": "package",
-    "name": "damukles/elm-dialog",
+    "name": "billstclair/elm-dialog",
     "summary": "A Dialog UI module based on Material Design Lite",
     "license": "BSD-3-Clause",
     "version": "1.0.5",
