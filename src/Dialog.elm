@@ -1,12 +1,13 @@
-module Dialog exposing (Config, Visible, visible, hidden, render)
+module Dialog exposing (Config, render, Visible, hidden, visible)
 
 {-| Elm Mdl Dialog
 
 @docs Config, render, Visible, hidden, visible
+
 -}
 
 import Html exposing (Html, div, text)
-import Html.Attributes exposing (style, class)
+import Html.Attributes exposing (class, style)
 
 
 {-| The Dialog Configuration.
@@ -61,10 +62,11 @@ visible =
 {-| Render the Dialog
 
     Dialog.render
-        { styles = [ ("width", "40%") ]
+        { styles = [ ( "width", "40%" ) ]
         , title = "My Dialog"
         , content = [ text "This is my dialog's body." ]
-        , actionBar = [ button [ onClick ToggleMyDialogVisible ] [ text "Close" ] ] }
+        , actionBar = [ button [ onClick ToggleMyDialogVisible ] [ text "Close" ] ]
+        }
         model.myDialogVisible
 
 You take care of the open and close Msg yourself. Just include a Visible in your
@@ -77,51 +79,59 @@ model for each Dialog.
     update msg model =
         case msg of
             ToggleMyDialogVisible ->
-                { model | myDialogVisible = not model.myDialogVisible } ! []
+                ( { model | myDialogVisible = not model.myDialogVisible }
+                , Cmd.none
+                )
 
 -}
 render : Config msg -> Visible -> Html msg
-render config visible =
+render config isVisible =
     let
         visibility =
-            if visible == True then
-                (,) "display" "flex"
+            if isVisible == True then
+                ( "display", "flex" )
+
             else
-                (,) "display" "none"
+                ( "display", "none" )
 
         dialogStyle =
             dialogBaseStyle ++ config.styles
     in
-        div [ style <| overlayStyle ++ [ visibility ] ]
-            [ div [ style dialogStyle ]
-                [ div [ class "mdl-dialog__title" ] [ text config.title ]
-                , div [ class "mdl-dialog__content" ] config.content
-                , div [ class "mdl-dialog__actions" ] config.actionBar
-                ]
+    div (mapStyles (overlayStyle ++ [ visibility ]))
+        [ div (mapStyles dialogStyle)
+            [ div [ class "mdl-dialog__title" ] [ text config.title ]
+            , div [ class "mdl-dialog__content" ] config.content
+            , div [ class "mdl-dialog__actions" ] config.actionBar
             ]
+        ]
+
+
+mapStyles : List ( String, String ) -> List (Html.Attribute msg)
+mapStyles styles =
+    List.map (\( name, value ) -> style name value) styles
 
 
 overlayStyle : List ( String, String )
 overlayStyle =
-    [ (,) "position" "fixed"
-    , (,) "overflow-x" "hidden"
-    , (,) "top" "0"
-    , (,) "left" "0"
-    , (,) "bottom" "0"
-    , (,) "right" "0"
-    , (,) "z-index" "10"
-    , (,) "background-color" "rgba(0,0,0,0.5)"
-    , (,) "justify-content" "center"
-    , (,) "align-items" "center"
+    [ ( "position", "fixed" )
+    , ( "overflow-x", "hidden" )
+    , ( "top", "0" )
+    , ( "left", "0" )
+    , ( "bottom", "0" )
+    , ( "right", "0" )
+    , ( "z-index", "10" )
+    , ( "background-color", "rgba(0,0,0,0.5)" )
+    , ( "justify-content", "center" )
+    , ( "align-items", "center" )
     ]
 
 
 dialogBaseStyle : List ( String, String )
 dialogBaseStyle =
-    [ (,) "min-width" "300px"
-    , (,) "background-color" "white"
-    , (,) "padding" "8px 16px 8px 16px"
-    , (,) "border-radius" "4px"
-    , (,) "border" "1px solid rgba(0,0,0,0.5)"
-    , (,) "box-shadow" "4px 4px 5px 0px rgba(97,97,97,1)"
+    [ ( "min-width", "300px" )
+    , ( "background-color", "white" )
+    , ( "padding", "8px 16px 8px 16px" )
+    , ( "border-radius", "4px" )
+    , ( "border", "1px solid rgba(0,0,0,0.5)" )
+    , ( "box-shadow", "4px 4px 5px 0px rgba(97,97,97,1)" )
     ]

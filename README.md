@@ -1,6 +1,8 @@
 # elm-dialog
 A Dialog UI module based on Material Design Lite
 
+[This is a fork of `damukles/elm-dialog`, changed only to make it build in Elm 0.19]
+
 ## Dependencies
 Material Design Lite
 

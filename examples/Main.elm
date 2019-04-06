@@ -1,18 +1,18 @@
 module Main exposing (main)
 
-import Html exposing (Html, div, button, text, node)
-import Html.Attributes exposing (style, class, type_)
-import Html.Events exposing (onClick)
+import Browser
 import Dialog
+import Html exposing (Html, button, div, node, text)
+import Html.Attributes exposing (class, style, type_)
+import Html.Events exposing (onClick)
 
 
-main : Program Never Model Msg
 main =
-    Html.program
-        { init = init
+    Browser.element
+        { init = \() -> init
         , update = update
         , view = view
-        , subscriptions = (\_ -> Sub.none)
+        , subscriptions = \_ -> Sub.none
         }
 
 
@@ -26,19 +26,19 @@ type Msg
 
 init : ( Model, Cmd Msg )
 init =
-    { myDialogVisible = Dialog.hidden } ! []
+    ( { myDialogVisible = Dialog.hidden }, Cmd.none )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ToggleMyDialogVisible ->
-            { model | myDialogVisible = not model.myDialogVisible } ! []
+            ( { model | myDialogVisible = not model.myDialogVisible }, Cmd.none )
 
 
 view : Model -> Html.Html Msg
 view model =
-    div [ style [ (,) "padding" "48px" ] ]
+    div [ style "padding" "48px" ]
         [ Dialog.render
             { styles = [ ( "width", "40%" ) ]
             , title = "My Dialog"
